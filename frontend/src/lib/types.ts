@@ -41,3 +41,63 @@ export interface AIProviderPublic {
   model_name: string;
   updated_at: string;
 }
+
+export type ReviewType = "security" | "performance" | "quality";
+export type Severity = "critical" | "high" | "medium" | "low";
+
+export interface ReviewIssue {
+  title: string;
+  description: string;
+  severity: Severity;
+  file_path: string;
+  line: number | null;
+}
+
+export interface ReviewPublic {
+  id: string;
+  project_id: string;
+  review_type: ReviewType;
+  reviewed_paths: string[];
+  summary: string;
+  issues: ReviewIssue[];
+  recommendations: string[];
+  created_at: string;
+}
+
+export interface ChatSessionPublic {
+  id: string;
+  project_id: string;
+  title: string;
+  created_at: string;
+}
+
+export interface ChatMessagePublic {
+  id: string;
+  session_id: string;
+  role: "user" | "assistant";
+  content: string;
+  referenced_paths: string[];
+  created_at: string;
+}
+
+export interface DiffReviewPublic {
+  id: string;
+  project_id: string;
+  file_path_a: string;
+  file_path_b: string;
+  diff_text: string;
+  summary: string;
+  issues: ReviewIssue[];
+  recommendations: string[];
+  created_at: string;
+}
+
+export type DocType = "readme" | "setup" | "api";
+
+export interface GeneratedDocPublic {
+  id: string;
+  project_id: string;
+  doc_type: DocType;
+  content: string;
+  created_at: string;
+}
