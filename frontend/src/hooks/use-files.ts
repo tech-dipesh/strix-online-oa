@@ -16,3 +16,41 @@ export function useFileContent(projectId: string, fileId: string | null) {
     enabled: fileId !== null,
   });
 }
+
+export function useUploadZip(projectId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (zipFile: File) => {
+      const formData = new FormData();
+      formData.append("file", zipFile);
+      return apiRequest<FilePublic[]>(`/projects/${projectId}/files/upload-zip`, {
+        method: "POST",
+        body: formData,
+        isFormData: true,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["files", projectId] });
+    },
+  });
+}
+
+export function useUploadFiles(projectId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (droppedFiles: File[]) => {
+      const formData = new FormData();
+      droppedFiles.forEach((file) => formData.append("files", file));
+      return apiRequest<FilePublic[]>(`/projects/${projectId}/files/upload`, {
+        method: "POST",
+        body: formData,
+        isFormData: true,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["files", projectId] });
+    },
+  });
+}
