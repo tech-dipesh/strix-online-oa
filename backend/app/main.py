@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import ai_providers, auth, chat, diff_reviews,  files, projects, reviews
+from app.routers import ai_providers, auth, chat, diff_reviews, docs, files, projects, reviews
 
 app = FastAPI(title="Strix Code Review Assistant")
 
@@ -20,6 +20,7 @@ app.include_router(ai_providers.router)
 app.include_router(reviews.router)
 app.include_router(chat.router)
 app.include_router(diff_reviews.router)
+app.include_router(docs.router)
 
 
 @app.get("/health")
